@@ -1,0 +1,4 @@
+/bin/
+!/bin/**.dll
+/solution/
+!premake5.exe
