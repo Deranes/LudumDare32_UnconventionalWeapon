@@ -4,8 +4,6 @@
 
 #include "component/ControllableComponent.h"
 
-#define SS_CONTROLLABLE_TIME_BETWEEN_ACTIONS	0.5f
-
 // Conveniency access function
 #define g_SSControllable SSControllable::GetInstance()
 
@@ -25,6 +23,4 @@ private:
     SSControllable&			operator=		(const SSControllable & rhs);
 
 	bool					KeyDown			( const Keybinding& key );
-
-	float					m_BeatTimer;
 };

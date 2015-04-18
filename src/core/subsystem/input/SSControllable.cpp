@@ -14,8 +14,6 @@ SSControllable& SSControllable::GetInstance()
 
 void SSControllable::Startup()
 {
-	m_BeatTimer = SS_CONTROLLABLE_TIME_BETWEEN_ACTIONS;
-
     Subsystem::Startup();
 }
 
@@ -26,14 +24,6 @@ void SSControllable::Shutdown()
 
 void SSControllable::Update( const float deltaTime )
 {
-	m_BeatTimer -= deltaTime;
-	if ( m_BeatTimer > 0.0f )
-	{
-		return;
-	}
-
-	m_BeatTimer = SS_CONTROLLABLE_TIME_BETWEEN_ACTIONS;
-
 	EntityMask controllableFlag = DenseComponentCollection<ControllableComponent>::GetInstance().GetComponentTypeFlag();
 	EntityMask placementFlag	= DenseComponentCollection<PlacementComponent>::GetInstance().GetComponentTypeFlag();
 	EntityMask combinedFlag		= controllableFlag | placementFlag;
