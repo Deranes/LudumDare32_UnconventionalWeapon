@@ -23,7 +23,7 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	placementComp->Position	= position;
 
 	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
-	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER_1) );
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER) );
 	spriteComp->Sprite.setColor(color);
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();

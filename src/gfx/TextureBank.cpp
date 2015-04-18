@@ -8,10 +8,8 @@ TextureBank& TextureBank::GetInstance()
 
 void TextureBank::Initialize()
 {
-	m_Textures[ TEXTURE_HANDLE_PLAYER_1	].loadFromFile( "asset/circle.jpg" );
-	m_Textures[ TEXTURE_HANDLE_PLAYER_2	].loadFromFile( "asset/circle.jpg" );
-	m_Textures[ TEXTURE_HANDLE_GUARD	].loadFromFile( "asset/circle.jpg" );
-	m_Textures[ TEXTURE_HANDLE_WALL		].loadFromFile( "asset/circle.jpg" );
+	m_Textures[ TEXTURE_HANDLE_PLAYER	].loadFromFile( "asset/circle.jpg" );
+	m_Textures[ TEXTURE_HANDLE_WALL		].loadFromFile( "asset/wall.png" );
 
 	for ( auto& texture : m_Textures )
 	{
