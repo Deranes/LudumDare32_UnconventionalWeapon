@@ -22,7 +22,7 @@ IntersectionTestFunction IntersectionTestLookupTable::Fetch( VOLUME_TYPE a, VOLU
 	return m_IntersectionTestFunctions[a][b];
 }
 
-bool IntersectionTestLookupTable::NotImplemented( const Volume* aVolume, const Volume* bVolume )
+void IntersectionTestLookupTable::NotImplemented( const Volume* aVolume, const Volume* bVolume, const glm::vec2& aVelocity, const glm::vec2& bVelocity, const float deltaTime, CollisionResult& outResult )
 {
-	return false;
+	outResult.Intersection = false;
 }

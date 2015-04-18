@@ -4,6 +4,16 @@
 
 #include "../volume/Volume.h"
 
+struct Collision {
+	Collision( float time, const glm::vec2& normal ) {
+		this->Time		= time;
+		this->Normal	= normal;
+	}
+
+	float		Time;
+	glm::vec2	Normal;
+};
+
 class RigidBody : public IRigidBody {
 public:
 								~RigidBody() override;
@@ -17,10 +27,12 @@ public:
 
 	void						SetPosition( const glm::vec2& newPosition ) override;
 	void						SetVelocity( const glm::vec2& newVelocity ) override;
+	void						SetMotionType( const MotionType newMotionType ) override;
 
-	glm::vec2					Position;
-	glm::vec2					Velocity;
-	bool						Derp;
+	glm::vec2					m_Position;
+	glm::vec2					m_Velocity;
+	MotionType					m_MotionType;
+	std::vector<Collision>		m_Collisions;
 
 private:
 	std::vector<const Volume*>	m_LocalVolumes;

@@ -12,6 +12,6 @@ public:
 
 	virtual void			Step( const float deltaTime ) = 0;
 
-	virtual IRigidBody*		CreateRigidBody() = 0;
+	virtual IRigidBody*		CreateRigidBody( MotionType motionType ) = 0;
 	virtual void			CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm::vec2& min, const glm::vec2& max ) = 0;
 };

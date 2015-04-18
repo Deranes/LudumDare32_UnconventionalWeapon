@@ -14,7 +14,7 @@ RigidBody::~RigidBody() {
 
 void RigidBody::AddVolume( const Volume* newVolume ) {
 	m_LocalVolumes.push_back( newVolume );
-	m_WorldVolumes.push_back( newVolume->CalculateWorld( this->Position ) );
+	m_WorldVolumes.push_back( newVolume->CalculateWorld( m_Position ) );
 }
 
 void RigidBody::CalculateWorldVolumes()
@@ -23,16 +23,16 @@ void RigidBody::CalculateWorldVolumes()
 
 	for ( int i = 0; i < static_cast<int>(m_LocalVolumes.size()); ++i )
 	{
-		m_LocalVolumes[i]->CalculateWorld( this->Position, m_WorldVolumes[i] );
+		m_LocalVolumes[i]->CalculateWorld( m_Position, m_WorldVolumes[i] );
 	}
 }
 
 const glm::vec2& RigidBody::GetPosition() const {
-	return this->Position;
+	return m_Position;
 }
 
 const glm::vec2& RigidBody::GetVelocity() const {
-	return this->Velocity;
+	return m_Velocity;
 }
 
 const std::vector<Volume*> RigidBody::GetWorldVolumes() const {
@@ -40,9 +40,13 @@ const std::vector<Volume*> RigidBody::GetWorldVolumes() const {
 }
 
 void RigidBody::SetPosition( const glm::vec2& newPosition ) {
-	this->Position = newPosition;
+	m_Position = newPosition;
 }
 
 void RigidBody::SetVelocity( const glm::vec2& newVelocity ) {
-	this->Velocity = newVelocity;
+	m_Velocity = newVelocity;
+}
+
+void RigidBody::SetMotionType( const MotionType newMotionType ) {
+	m_MotionType = newMotionType;
 }

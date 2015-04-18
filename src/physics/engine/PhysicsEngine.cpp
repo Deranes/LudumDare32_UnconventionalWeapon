@@ -1,6 +1,7 @@
 #include "PhysicsEngine.h"
 
 #include "../volume/AABB.h"
+#include "glm/geometric.hpp"
 
 PhysicsEngine::~PhysicsEngine() {
 	this->Shutdown();
@@ -16,7 +17,6 @@ void PhysicsEngine::Shutdown() {
 void PhysicsEngine::Step( const float deltaTime ) {
 	for ( auto& rigidBody : m_RigidBodies ) {
 		rigidBody->CalculateWorldVolumes();
-		rigidBody->Derp = false;
 	}
 
 	for ( auto aBody_it = m_RigidBodies.begin(); aBody_it != m_RigidBodies.end(); ++aBody_it ) {
@@ -33,24 +33,48 @@ void PhysicsEngine::Step( const float deltaTime ) {
 			Volume* bVolume = bBody->GetWorldVolumes()[0];
 
 			IntersectionTestFunction intersectionTestFunction = m_TestLookup.Fetch( aVolume->GetVolumeType(), bVolume->GetVolumeType() );
-			if ( (*intersectionTestFunction)( aVolume, bVolume ) ) {
-				aBody->Derp = true;
-				bBody->Derp = true;
+
+			CollisionResult result;
+			(*intersectionTestFunction)( aVolume, bVolume, aBody->m_Velocity, bBody->m_Velocity, deltaTime, result );
+
+			if ( result.Intersection ) {
+				aBody->m_Collisions.push_back( Collision( result.Time, result.NormalOne ) );
+				bBody->m_Collisions.push_back( Collision( result.Time, result.NormalTwo ) );
 			}
 		}
 	}
 
 	for ( auto& rigidBody : m_RigidBodies ) {
-		if ( rigidBody->Derp ) {
-			rigidBody->Velocity = glm::vec2( 0.0f );
+		if ( rigidBody->m_MotionType == MotionType::PhysicsDriven && !rigidBody->m_Collisions.empty() ) {
+			float earliestCollisionTime = deltaTime;
+
+			glm::vec2 newVelocity = rigidBody->m_Velocity;
+
+			for ( auto& collision : rigidBody->m_Collisions ) {
+				if ( collision.Time < earliestCollisionTime ) {
+					earliestCollisionTime = collision.Time;
+				}
+
+				float projDist = glm::dot( collision.Normal, newVelocity );
+				newVelocity -= projDist * collision.Normal;
+				rigidBody->m_Position += 0.01f * collision.Normal;
+			}
+
+			rigidBody->m_Position += earliestCollisionTime * rigidBody->m_Velocity;
+
+			rigidBody->m_Velocity	= newVelocity;
+			rigidBody->m_Position += (deltaTime - earliestCollisionTime) * newVelocity;
+		} else {
+			rigidBody->m_Position += deltaTime * rigidBody->m_Velocity;
 		}
 
-		rigidBody->Position += deltaTime * rigidBody->Velocity;
+		rigidBody->m_Collisions.clear();
 	}
 }
 
-IRigidBody* PhysicsEngine::CreateRigidBody() {
+IRigidBody* PhysicsEngine::CreateRigidBody( MotionType motionType ) {
 	RigidBody* newRigidBody = new RigidBody();
+	newRigidBody->SetMotionType( motionType );
 	m_RigidBodies.push_back( newRigidBody );
 	return newRigidBody;
 }

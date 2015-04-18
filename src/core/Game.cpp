@@ -39,10 +39,8 @@ void Game::Initialize(sf::RenderWindow* window){
 	g_SubsystemManager.Startup();
 
 	EntityFactory::CreatePlayer( glm::vec2( 2.0f, 8.0f ), sf::Color::White );
-
-	for ( int i = 1; i < 31; ++i ) {
-		EntityFactory::CreateObstacle( glm::vec2( i, 14.0f ), glm::vec2( 1.0f, 1.0f ) );
-	}
+	EntityFactory::CreateObstacle( glm::vec2( 1.0f, 14.0f ), glm::vec2( 16.0f, 1.0f ) );
+	EntityFactory::CreateObstacle( glm::vec2( 1.0f, 12.0f ), glm::vec2( 1.0f, 16.0f ) );
 
 	g_SSRender.SetWindow(window);
 }

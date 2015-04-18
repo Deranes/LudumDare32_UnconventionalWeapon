@@ -4,7 +4,7 @@
 #include "../../datadriven/DenseComponentCollection.h"
 #include "../../datadriven/EntityManager.h"
 #include "../../component/ControllableComponent.h"
-#include "../../component/PlacementComponent.h"
+#include "../../component/VelocityComponent.h"
 
 SSControllable& SSControllable::GetInstance()
 {
@@ -25,8 +25,8 @@ void SSControllable::Shutdown()
 void SSControllable::Update( const float deltaTime )
 {
 	EntityMask controllableFlag = DenseComponentCollection<ControllableComponent>::GetInstance().GetComponentTypeFlag();
-	EntityMask placementFlag	= DenseComponentCollection<PlacementComponent>::GetInstance().GetComponentTypeFlag();
-	EntityMask combinedFlag		= controllableFlag | placementFlag;
+	EntityMask velocityFlag		= DenseComponentCollection<VelocityComponent>::GetInstance().GetComponentTypeFlag();
+	EntityMask combinedFlag		= controllableFlag | velocityFlag;
 
 	int entityID = 0;
 	for ( auto& entityMask : g_EntityManager.GetEntityMasks() )
@@ -34,16 +34,16 @@ void SSControllable::Update( const float deltaTime )
 		if ( ( entityMask & combinedFlag ) == combinedFlag )
 		{
 			ControllableComponent*	controllableComp	= GetDenseComponent<ControllableComponent>( entityID );
-			PlacementComponent*		placementComp		= GetDenseComponent<PlacementComponent>( entityID );
+			VelocityComponent*		velocityComp		= GetDenseComponent<VelocityComponent>( entityID );
 
 			if ( this->KeyDown( controllableComp->KeyMoveUp ) )
-				placementComp->Position.y += deltaTime;
+				velocityComp->Velocity.y = -5.0f;
 			else if ( this->KeyDown( controllableComp->KeyMoveDown ) )
-				placementComp->Position.y -= deltaTime;
+				velocityComp->Velocity.y = 5.0f;
 			else if ( this->KeyDown( controllableComp->KeyMoveLeft ) )
-				placementComp->Position.x -= deltaTime;
+				velocityComp->Velocity.x = -5.0f;
 			else if ( this->KeyDown( controllableComp->KeyMoveRight ) )
-				placementComp->Position.x += deltaTime;
+				velocityComp->Velocity.x = 5.0f;
 		}
 		entityID++;
 	}

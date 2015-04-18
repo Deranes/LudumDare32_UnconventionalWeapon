@@ -25,6 +25,9 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
 	placementComp->Position	= position;
 
+	//VelocityComponent* velocityComp = GetDenseComponent<VelocityComponent>(entity);
+	//velocityComp->Velocity = glm::vec2( 1.0f, 400.0f );
+
 	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
 	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER) );
 	spriteComp->Sprite.setColor(color);
@@ -34,7 +37,7 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	spriteComp->Sprite.setOrigin( sf::Vector2f( 0.5f * spriteSize.x, 0.5f * spriteSize.y ) );
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
-	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody();
+	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::PhysicsDriven );
 	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ), glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ) );
 
 	return entity;
@@ -57,7 +60,7 @@ Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2
 	spriteComp->Sprite.setScale( sf::Vector2f( size.x / spriteSize.x, size.y / spriteSize.y ) );
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
-	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody();
+	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::Fixed );
 	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, glm::vec2( 0.0f ), size );
 
 	return entity;
