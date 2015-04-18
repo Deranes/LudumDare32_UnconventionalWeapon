@@ -2,6 +2,7 @@
 #include <SFML/System.hpp>
 #include <SFML/Graphics.hpp>
 #include <glm/glm.hpp>
+
 class Game
 {
 public:
