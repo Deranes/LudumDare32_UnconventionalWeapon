@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 #include "Game.h"
-#include "level/Level.h"
+
 int main() {
 	sf::RenderWindow window = sf::RenderWindow(sf::VideoMode(1280, 720), "Test window");
 	sf::Event event;
@@ -9,8 +9,6 @@ int main() {
 
 	sf::Clock gametimer;
 
-	Level level;
-	level.Load( "asset/levels/Level1.conga" ); //congainthedark\bin\windows\Release
 	
 	while (window.isOpen()){
 		while (window.pollEvent(event)){ 
