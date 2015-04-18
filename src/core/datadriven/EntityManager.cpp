@@ -21,7 +21,7 @@ EntityManager::EntityManager()
 
 EntityManager::~EntityManager()
 {
-	delete m_Collections; //TODO THis might break?
+	//delete m_Collections; //TODO THis might break?
 }
 
 void EntityManager::SetCollectionVector( std::vector<BaseCollection*>* collections )
