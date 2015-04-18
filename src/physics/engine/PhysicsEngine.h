@@ -3,20 +3,22 @@
 #include "../IPhysicsEngine.h"
 
 #include "../body/RigidBody.h"
+#include "../detection/IntersectionTestLookupTable.h"
 
 #include <vector>
 
 class PhysicsEngine : public IPhysicsEngine {
 public:
-							~PhysicsEngine();
+								~PhysicsEngine();
 
-	void					Shutdown() override;
+	void						Shutdown() override;
 
-	void					Step( const float deltaTime ) override;
+	void						Step( const float deltaTime ) override;
 
-	IRigidBody*				CreateRigidBody() override;
-	void					CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm::vec2& min, const glm::vec2& max ) override;
+	IRigidBody*					CreateRigidBody() override;
+	void						CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm::vec2& min, const glm::vec2& max ) override;
 
 private:
-	std::vector<RigidBody*>	m_RigidBodies;
+	std::vector<RigidBody*>		m_RigidBodies;
+	IntersectionTestLookupTable	m_TestLookup;
 };

@@ -35,6 +35,10 @@ const glm::vec2& RigidBody::GetVelocity() const {
 	return this->Velocity;
 }
 
+const std::vector<Volume*> RigidBody::GetWorldVolumes() const {
+	return m_WorldVolumes;
+}
+
 void RigidBody::SetPosition( const glm::vec2& newPosition ) {
 	this->Position = newPosition;
 }

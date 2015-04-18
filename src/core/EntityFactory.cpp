@@ -45,6 +45,7 @@ Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2
 	
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PhysicsComponent		>() );
 
 	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
 	placementComp->Position	= position;
@@ -54,6 +55,10 @@ Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
 	spriteComp->Sprite.setScale( sf::Vector2f( size.x / spriteSize.x, size.y / spriteSize.y ) );
+
+	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
+	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody();
+	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, glm::vec2( 0.0f ), size );
 
 	return entity;
 }

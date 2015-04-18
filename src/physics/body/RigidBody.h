@@ -13,12 +13,14 @@ public:
 
 	const glm::vec2&			GetPosition() const override;
 	const glm::vec2&			GetVelocity() const override;
+	const std::vector<Volume*>	GetWorldVolumes() const;
 
 	void						SetPosition( const glm::vec2& newPosition ) override;
 	void						SetVelocity( const glm::vec2& newVelocity ) override;
 
 	glm::vec2					Position;
 	glm::vec2					Velocity;
+	bool						Derp;
 
 private:
 	std::vector<const Volume*>	m_LocalVolumes;
