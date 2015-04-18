@@ -5,6 +5,8 @@
 #include "component/PlacementComponent.h"
 #include "component/SpriteComponent.h"
 #include "component/ControllableComponent.h"
+#include "component/GravityComponent.h"
+#include "component/VelocityComponent.h"
 #include "../gfx/TextureBank.h"
 
 
@@ -14,6 +16,11 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< ControllableComponent	>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< GravityComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
+
+	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
+	placementComp->Position	= position;
 
 	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
 	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER_1) );

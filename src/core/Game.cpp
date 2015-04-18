@@ -7,6 +7,8 @@
 #include "component/SpriteComponent.h"
 #include "component/PlacementComponent.h"
 #include "component/ControllableComponent.h"
+#include "component/GravityComponent.h"
+#include "component/VelocityComponent.h"
 #include "../gfx/TextureBank.h"
 #include "subsystem/gfx/SSRender.h"
 
@@ -25,7 +27,9 @@ void Game::Initialize(sf::RenderWindow* window){
 	std::vector<BaseCollection*>* collections = GetCollections<
 													SpriteComponent,
 													PlacementComponent,
-													ControllableComponent
+													ControllableComponent,
+													GravityComponent,
+													VelocityComponent
 													>();
 
 	g_EntityManager.SetCollectionVector(collections);
