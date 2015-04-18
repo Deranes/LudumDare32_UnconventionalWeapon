@@ -37,13 +37,13 @@ void SSControllable::Update( const float deltaTime )
 			PlacementComponent*		placementComp		= GetDenseComponent<PlacementComponent>( entityID );
 
 			if ( this->KeyDown( controllableComp->KeyMoveUp ) )
-				placementComp->Position.y--;
+				placementComp->Position.y -= deltaTime;
 			else if ( this->KeyDown( controllableComp->KeyMoveDown ) )
-				placementComp->Position.y++;
+				placementComp->Position.y += deltaTime;
 			else if ( this->KeyDown( controllableComp->KeyMoveLeft ) )
-				placementComp->Position.x--;
+				placementComp->Position.x -= deltaTime;
 			else if ( this->KeyDown( controllableComp->KeyMoveRight ) )
-				placementComp->Position.x++;
+				placementComp->Position.x += deltaTime;
 		}
 		entityID++;
 	}
