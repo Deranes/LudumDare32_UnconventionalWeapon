@@ -41,7 +41,7 @@ solution "LudumDare32"
 		language "C++"
 		kind "ConsoleApp"
 		files { "src/**.cpp", "src/**.hpp", "src/**.h" }
-		includedirs { "src/core", "src/input", "include", "include/SFML", "include/glm" }
+		includedirs { "src/core", "include", "include/SFML", "include/glm" }
 		links {}
 		
 		configuration {"debug"}
