@@ -45,7 +45,7 @@ void SSRender::Update( const float deltaTime )
 
 void SSRender::SetWindow(sf::RenderWindow* window)
 {
-	sf::View view(sf::FloatRect(0.0f, 0.0f, 8.0f, 8.0f));	// TODOOE: Get width and height from level.
+	sf::View view(sf::FloatRect(0.0f, 0.0f, 32.0f, 16.0f));	// TODOOE: Get width and height from level.
 	window->setView( view );
 
 	m_Window = window;
