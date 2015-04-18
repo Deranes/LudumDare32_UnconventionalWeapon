@@ -31,3 +31,21 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 
 	return entity;
 }
+
+Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2& size ) {
+	Entity entity = g_EntityManager.CreateEntity();
+	
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
+
+	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
+	placementComp->Position	= position;
+
+	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_WALL) );
+
+	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
+	spriteComp->Sprite.setScale( sf::Vector2f( size.x / spriteSize.x, size.y / spriteSize.y ) );
+
+	return entity;
+}

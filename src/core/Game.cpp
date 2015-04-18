@@ -35,7 +35,9 @@ void Game::Initialize(sf::RenderWindow* window){
 	g_EntityManager.SetCollectionVector(collections);
 
 	g_SubsystemManager.Startup();
-	EntityFactory::CreatePlayer( glm::vec2( 2.0f, 3.0f ), sf::Color::Blue );
+
+	EntityFactory::CreatePlayer( glm::vec2( 2.0f, 8.0f ), sf::Color::White );
+	EntityFactory::CreateObstacle( glm::vec2( 1.0f, 1.0f ), glm::vec2( 1.0f, 1.0f ) );
 
 	g_SSRender.SetWindow(window);
 }

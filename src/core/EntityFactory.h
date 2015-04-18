@@ -10,5 +10,6 @@ class EntityFactory
 {
 	public:
 		static Entity CreatePlayer( const glm::vec2& position, const sf::Color& color );
+		static Entity CreateObstacle( const glm::vec2& position, const glm::vec2& size );
 	private:
 };
