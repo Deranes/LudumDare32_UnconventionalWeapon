@@ -7,7 +7,9 @@
 #include "component/ControllableComponent.h"
 #include "component/GravityComponent.h"
 #include "component/VelocityComponent.h"
+#include "component/PhysicsComponent.h"
 #include "../gfx/TextureBank.h"
+#include "../physics/IPhysicsEngine.h"
 
 
 Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& color ) {
@@ -18,6 +20,7 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< ControllableComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< GravityComponent		>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PhysicsComponent		>() );
 
 	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
 	placementComp->Position	= position;
@@ -28,6 +31,9 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
 	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PLAYER_SIZE / spriteSize.x, ENTITY_FACTORY_PLAYER_SIZE / spriteSize.y ) );
+
+	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
+	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody();
 
 	return entity;
 }

@@ -9,6 +9,7 @@
 #include "component/ControllableComponent.h"
 #include "component/GravityComponent.h"
 #include "component/VelocityComponent.h"
+#include "component/PhysicsComponent.h"
 #include "../gfx/TextureBank.h"
 #include "subsystem/gfx/SSRender.h"
 
@@ -29,7 +30,8 @@ void Game::Initialize(sf::RenderWindow* window){
 													PlacementComponent,
 													ControllableComponent,
 													GravityComponent,
-													VelocityComponent
+													VelocityComponent,
+													PhysicsComponent
 													>();
 
 	g_EntityManager.SetCollectionVector(collections);
@@ -37,7 +39,10 @@ void Game::Initialize(sf::RenderWindow* window){
 	g_SubsystemManager.Startup();
 
 	EntityFactory::CreatePlayer( glm::vec2( 2.0f, 8.0f ), sf::Color::White );
-	EntityFactory::CreateObstacle( glm::vec2( 1.0f, 1.0f ), glm::vec2( 1.0f, 1.0f ) );
+
+	for ( int i = 1; i < 31; ++i ) {
+		EntityFactory::CreateObstacle( glm::vec2( i, 14.0f ), glm::vec2( 1.0f, 1.0f ) );
+	}
 
 	g_SSRender.SetWindow(window);
 }
