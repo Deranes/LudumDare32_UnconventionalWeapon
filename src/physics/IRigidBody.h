@@ -10,4 +10,7 @@ public:
 
 	virtual void				SetPosition( const glm::vec2& newPosition ) = 0;
 	virtual void				SetVelocity( const glm::vec2& newVelocity ) = 0;
+
+protected:
+	virtual						~IRigidBody() {}
 };

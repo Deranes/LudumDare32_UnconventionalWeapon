@@ -31,9 +31,11 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
 	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PLAYER_SIZE / spriteSize.x, ENTITY_FACTORY_PLAYER_SIZE / spriteSize.y ) );
+	spriteComp->Sprite.setOrigin( sf::Vector2f( 0.5f * spriteSize.x, 0.5f * spriteSize.y ) );
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
 	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody();
+	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ), glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ) );
 
 	return entity;
 }

@@ -20,6 +20,8 @@ void SSPhysics::Startup( )
 
 void SSPhysics::Shutdown( )
 {
+	g_PhysicsEngine.Shutdown();
+
     Subsystem::Shutdown();
 }
 
