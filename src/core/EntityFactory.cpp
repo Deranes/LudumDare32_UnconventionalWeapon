@@ -8,7 +8,7 @@
 #include "../gfx/TextureBank.h"
 
 
-Entity EntityFactory::CreatePlayer( const glm::ivec2& tilePosition, const sf::Color& color ) {
+Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& color ) {
 	Entity entity = g_EntityManager.CreateEntity();
 	
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );

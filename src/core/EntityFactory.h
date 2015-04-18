@@ -9,6 +9,6 @@
 class EntityFactory
 {
 	public:
-		static Entity CreatePlayer( const glm::ivec2& tilePosition, const sf::Color& color );
+		static Entity CreatePlayer( const glm::vec2& position, const sf::Color& color );
 	private:
 };

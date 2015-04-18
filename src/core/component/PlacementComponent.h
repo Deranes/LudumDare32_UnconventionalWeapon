@@ -4,5 +4,5 @@
 
 struct PlacementComponent
 {
-	glm::ivec2		Position	= glm::ivec2( 0 );
+	glm::vec2		Position	= glm::vec2( 0 );
 };
