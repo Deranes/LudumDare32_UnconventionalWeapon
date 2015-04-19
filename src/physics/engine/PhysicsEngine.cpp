@@ -24,6 +24,10 @@ void PhysicsEngine::Step( const float deltaTime ) {
 			RigidBody* aBody = (*aBody_it);
 			RigidBody* bBody = (*bBody_it);
 
+			if ( aBody->m_MotionType != MotionType::PhysicsDriven && bBody->m_MotionType != MotionType::PhysicsDriven ) {
+				continue;
+			}
+
 			// TODOOE: Don't assume that there is only one volume for each rigid body.
 			if ( aBody->GetWorldVolumes().empty() || bBody->GetWorldVolumes().empty() ) {
 				continue;

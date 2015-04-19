@@ -4,5 +4,5 @@
 
 struct GravityComponent
 {
-	glm::vec2		GravitationalAcceleration	= glm::vec2( 0.0f, 20.0f );
+	glm::vec2		GravitationalAcceleration	= glm::vec2( 0.0f, 30.0f );
 };

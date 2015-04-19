@@ -3,6 +3,7 @@
 #include "gamelogic/SSPhysics.h"
 #include "gfx/SSRender.h"
 #include "input/SSControllable.h"
+#include "level/SSLevel.h"
 #include <algorithm>
 
 
@@ -37,6 +38,7 @@ void SubsystemManager::Startup()
 	AddSubsystem( &g_SSPhysics		);
 	AddSubsystem( &g_SSRender		);
 	AddSubsystem( &g_SSControllable	);
+	AddSubsystem( &g_SSLevel		);
 
 	StartAll();
 }
