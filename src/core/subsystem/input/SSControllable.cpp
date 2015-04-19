@@ -1,6 +1,7 @@
 #include "SSControllable.h"
 
 #include <SFML/Window/Keyboard.hpp>
+#include <glm/common.hpp>
 #include "../../datadriven/DenseComponentCollection.h"
 #include "../../datadriven/EntityManager.h"
 #include "../../component/ControllableComponent.h"
@@ -36,14 +37,24 @@ void SSControllable::Update( const float deltaTime )
 			ControllableComponent*	controllableComp	= GetDenseComponent<ControllableComponent>( entityID );
 			VelocityComponent*		velocityComp		= GetDenseComponent<VelocityComponent>( entityID );
 
-			if ( this->KeyDown( controllableComp->KeyMoveUp ) )
-				velocityComp->Velocity.y = -5.0f;
-			else if ( this->KeyDown( controllableComp->KeyMoveDown ) )
-				velocityComp->Velocity.y = 5.0f;
-			else if ( this->KeyDown( controllableComp->KeyMoveLeft ) )
-				velocityComp->Velocity.x = -5.0f;
-			else if ( this->KeyDown( controllableComp->KeyMoveRight ) )
-				velocityComp->Velocity.x = 5.0f;
+			if ( this->KeyDown( controllableComp->KeyMoveRight ) && velocityComp->Velocity.x < CONTROLLABLE_MAX_SPEED ) {
+				velocityComp->Velocity.x = glm::min( CONTROLLABLE_MAX_SPEED, velocityComp->Velocity.x + deltaTime * CONTROLLABLE_ACCELERATION );
+				velocityComp->Velocity.x = glm::max( 0.0f, velocityComp->Velocity.x );
+			} else if ( this->KeyDown( controllableComp->KeyMoveLeft ) && velocityComp->Velocity.x > -CONTROLLABLE_MAX_SPEED ) {
+				velocityComp->Velocity.x = glm::max( -CONTROLLABLE_MAX_SPEED, velocityComp->Velocity.x - deltaTime * CONTROLLABLE_ACCELERATION );
+				velocityComp->Velocity.x = glm::min( 0.0f, velocityComp->Velocity.x );
+			} else {
+				float length = glm::abs( velocityComp->Velocity.x );
+				if ( length < deltaTime * CONTROLLABLE_DEACCELERATION ) {
+					velocityComp->Velocity.x = 0.0f;
+				} else {
+					velocityComp->Velocity.x -= glm::sign( velocityComp->Velocity.x ) * deltaTime * CONTROLLABLE_DEACCELERATION;
+				}
+			}
+			
+			if ( this->KeyDown( controllableComp->KeyJump ) || this->KeyDown( controllableComp->KeyJumpSecond ) ) {
+				velocityComp->Velocity.y = -CONTROLLABLE_JUMP_SPEED;
+			}
 		}
 		entityID++;
 	}

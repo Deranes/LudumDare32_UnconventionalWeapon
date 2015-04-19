@@ -4,6 +4,11 @@
 
 #include "component/ControllableComponent.h"
 
+#define CONTROLLABLE_ACCELERATION	30.0f
+#define CONTROLLABLE_DEACCELERATION	30.0f
+#define CONTROLLABLE_MAX_SPEED		7.0f
+#define CONTROLLABLE_JUMP_SPEED		12.0f
+
 // Conveniency access function
 #define g_SSControllable SSControllable::GetInstance()
 
