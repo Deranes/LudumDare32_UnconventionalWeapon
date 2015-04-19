@@ -9,6 +9,6 @@ public:
 	Game();
 	~Game();
 	void Initialize(sf::RenderWindow* window);
-	void Update(sf::Clock& gameTime);
+	void Update(float deltaTime);
 private:
 };

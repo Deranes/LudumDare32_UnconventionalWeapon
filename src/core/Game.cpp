@@ -44,8 +44,6 @@ void Game::Initialize(sf::RenderWindow* window){
 }
 
 //update game state
-void Game::Update(sf::Clock& gameTime){
-	float dt = gameTime.restart().asSeconds();
-
-	g_SubsystemManager.Update(dt);
+void Game::Update(float deltaTime){
+	g_SubsystemManager.Update(deltaTime);
 }
