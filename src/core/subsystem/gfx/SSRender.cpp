@@ -14,7 +14,7 @@ SSRender& SSRender::GetInstance()
 
 void SSRender::Startup()
 {
-	m_ScreenSize = glm::vec2( 24.0f, 13.5f );
+	m_ScreenSize = glm::vec2( 32.0f, 18.0f );
 }
 
 void SSRender::Shutdown()
