@@ -8,6 +8,7 @@
 #include "component/GravityComponent.h"
 #include "component/VelocityComponent.h"
 #include "component/PhysicsComponent.h"
+#include "component/FollowComponent.h"
 #include "../gfx/TextureBank.h"
 #include "../physics/IPhysicsEngine.h"
 
@@ -33,12 +34,47 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 	spriteComp->Sprite.setColor(color);
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
-	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PLAYER_SIZE / spriteSize.x, ENTITY_FACTORY_PLAYER_SIZE / spriteSize.y ) );
+	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PLAYER_SIZE_X / spriteSize.x, ENTITY_FACTORY_PLAYER_SIZE_Y / spriteSize.y ) );
 	spriteComp->Sprite.setOrigin( sf::Vector2f( 0.5f * spriteSize.x, 0.5f * spriteSize.y ) );
+
+	ControllableComponent* controllableComp = GetDenseComponent<ControllableComponent>(entity);
+	controllableComp->KeyMoveLeft	= Keybinding( sf::Keyboard::Left,	sf::Keyboard::A );
+	controllableComp->KeyMoveRight	= Keybinding( sf::Keyboard::Right,	sf::Keyboard::D );
+	controllableComp->KeyJump		= Keybinding( sf::Keyboard::Up,		sf::Keyboard::W );
+	controllableComp->KeyJumpSecond	= Keybinding( sf::Keyboard::Space,	sf::Keyboard::Z );
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
 	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::PhysicsDriven );
-	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ), glm::vec2( 0.5f * ENTITY_FACTORY_PLAYER_SIZE ) );
+	glm::vec2 halfSize( 0.5f * ENTITY_FACTORY_PLAYER_SIZE_X, 0.5f * ENTITY_FACTORY_PLAYER_SIZE_Y );
+	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -halfSize, halfSize );
+
+	return entity;
+}
+
+Entity EntityFactory::CreateWeapon( Entity owner, const glm::vec2& offset ) {
+	Entity entity = g_EntityManager.CreateEntity();
+	
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< ControllableComponent	>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< FollowComponent		>() );
+
+	PlacementComponent* placementComp		= GetDenseComponent<PlacementComponent>(entity);
+	PlacementComponent* ownerPlacementComp	= GetDenseComponent<PlacementComponent>(owner);
+	placementComp->Position	= ownerPlacementComp->Position + offset;
+
+	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER) );
+
+	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
+	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_WEAPON_SIZE_X / spriteSize.x, ENTITY_FACTORY_WEAPON_SIZE_Y / spriteSize.y ) );
+	spriteComp->Sprite.setOrigin( sf::Vector2f( 0.5f * spriteSize.x, 0.5f * spriteSize.y ) );
+
+	FollowComponent* followComp = GetDenseComponent<FollowComponent>(entity);
+	followComp->TargetEntity	= owner;
+	followComp->Offset			= offset;
+	followComp->Acceleration	= 60.0f;
 
 	return entity;
 }

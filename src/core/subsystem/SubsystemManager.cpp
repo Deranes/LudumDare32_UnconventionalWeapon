@@ -1,6 +1,7 @@
 #include "SubsystemManager.h"
 #include "gamelogic/SSGravity.h"
 #include "gamelogic/SSPhysics.h"
+#include "gamelogic/SSFollow.h"
 #include "gfx/SSRender.h"
 #include "input/SSControllable.h"
 #include "level/SSLevel.h"
@@ -27,6 +28,7 @@ void SubsystemManager::Startup()
 	// Update priorities
 	g_SSControllable	.SetUpdateOrderPriority(   5U );	// Before: Game Logic	|
 	g_SSGravity			.SetUpdateOrderPriority( 110U );	// Before: Physics		| After: Input
+	g_SSFollow			.SetUpdateOrderPriority( 110U );	// Before: Physics		|
 	g_SSPhysics			.SetUpdateOrderPriority( 130U );	// Before: Rendering	| After: Gravity (Accelerations)
 	g_SSRender			.SetUpdateOrderPriority( 200U );	//						| After: Everything
 
@@ -36,6 +38,7 @@ void SubsystemManager::Startup()
 	// Add all subsystems here.
 	AddSubsystem( &g_SSGravity		);
 	AddSubsystem( &g_SSPhysics		);
+	AddSubsystem( &g_SSFollow		);
 	AddSubsystem( &g_SSRender		);
 	AddSubsystem( &g_SSControllable	);
 	AddSubsystem( &g_SSLevel		);
