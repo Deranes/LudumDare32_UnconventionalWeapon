@@ -40,10 +40,11 @@ void Game::Initialize(sf::RenderWindow* window){
 
 	g_SubsystemManager.Startup();
 
-	Entity player = EntityFactory::CreatePlayer( glm::vec2( 2.0f, 8.0f ), sf::Color::White );
-	EntityFactory::CreateWeapon( player, glm::vec2( 0.0f, - 1.5f ) );
+	m_Player = EntityFactory::CreatePlayer( glm::vec2( 2.0f, 8.0f ), sf::Color::White );
+	EntityFactory::CreateWeapon( m_Player, glm::vec2( 0.0f, - 1.5f ) );
 
 	g_SSRender.SetWindow(window);
+	g_SSRender.SetTargetEntity(m_Player);
 }
 
 //update game state

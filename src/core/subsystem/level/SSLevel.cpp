@@ -1,6 +1,7 @@
 #include "SSLevel.h"
 
 #include "../../EntityFactory.h"
+#include "../gfx/SSRender.h"
 
 #define LEVEL_WALL_COLOR_ROCK	sf::Color::Black
 
@@ -17,6 +18,7 @@ void SSLevel::Startup( )
 	m_LevelFolderPaths.push_back( "asset/level/0" );
 
 	this->LoadLevel( m_ActiveLevelIndex );
+	g_SSRender.SetBounds( glm::vec2( 0.0f ), m_LevelSize );
 
     Subsystem::Startup();
 }
