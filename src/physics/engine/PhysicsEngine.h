@@ -16,6 +16,7 @@ public:
 	void								Step( const float deltaTime ) override;
 
 	IRigidBody*							CreateRigidBody( MotionType motionType ) override;
+	void								PhysicsEngine::DestroyRigidBody( IRigidBody* rigidBody ) override;
 	void								CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm::vec2& min, const glm::vec2& max ) override;
 
 	const std::vector<CollisionInfo>&	GetCollisions() override;	

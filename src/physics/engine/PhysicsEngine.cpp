@@ -90,6 +90,15 @@ IRigidBody* PhysicsEngine::CreateRigidBody( MotionType motionType ) {
 	return newRigidBody;
 }
 
+void PhysicsEngine::DestroyRigidBody( IRigidBody* rigidBody ) {
+	auto body_it = std::find( m_RigidBodies.begin(), m_RigidBodies.end(), rigidBody );
+
+	assert ( body_it != m_RigidBodies.end() );	// Makes sure that the entity was created by this instance.
+
+	delete *body_it;
+	m_RigidBodies.erase( body_it );
+}
+
 void PhysicsEngine::CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm::vec2& min, const glm::vec2& max ) {
 	AABB* newVolume = new AABB();
 	

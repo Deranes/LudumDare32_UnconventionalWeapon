@@ -6,6 +6,7 @@
 #include "../../component/PhysicsComponent.h"
 #include "../../component/PlacementComponent.h"
 #include "../../component/VelocityComponent.h"
+#include "../gamelogic/SSKill.h"
 
 SSPhysics& SSPhysics::GetInstance( )
 {
@@ -80,14 +81,14 @@ void SSPhysics::Update( const float deltaTime )
 		EntityMask entityMask = g_EntityManager.GetEntityMask( collision.A_UserData );
 		if ( entityMask & physicsFlag ) {
 			if ( GetDenseComponent<PhysicsComponent>(collision.A_UserData)->Group == ENTITY_TYPE_PROJECTILE ) {
-				g_EntityManager.RemoveEntity( collision.A_UserData );
+				g_SSKill.KillEntity( collision.A_UserData );
 			}
 		}
 
 		entityMask = g_EntityManager.GetEntityMask( collision.B_UserData );
 		if ( entityMask & physicsFlag ) {
 			if ( GetDenseComponent<PhysicsComponent>(collision.B_UserData)->Group == ENTITY_TYPE_PROJECTILE ) {
-				g_EntityManager.RemoveEntity( collision.B_UserData );
+				g_SSKill.KillEntity( collision.B_UserData );
 			}
 		}
 	}

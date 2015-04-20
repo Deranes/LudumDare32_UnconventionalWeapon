@@ -1,0 +1,25 @@
+#pragma once
+
+#include "../Subsystem.h"
+
+#include "../../datadriven/ComponentTypes.h"
+
+// Conveniency access function
+#define g_SSKill SSKill::GetInstance()
+
+class SSKill : public Subsystem
+{
+public:
+    static SSKill&	GetInstance();
+    void			Startup( ) override;
+    void			Shutdown( ) override;
+    void			Update( const float deltaTime ) override;
+	void			KillEntity( Entity entity );
+
+private:
+    // No external instancing allowed
+    SSKill ( ) : Subsystem( "Kill" ) {}
+    SSKill ( const SSKill & rhs );
+    ~SSKill ( ) {};
+    SSKill& operator=(const SSKill & rhs);
+};
