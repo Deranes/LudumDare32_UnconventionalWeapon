@@ -5,6 +5,7 @@
 #include "datadriven/EntityManager.h"
 #include "component/SpriteComponent.h"
 #include "component/PlacementComponent.h"
+#include "../../../gfx/TextureBank.h"
 
 SSRender& SSRender::GetInstance()
 {
@@ -15,6 +16,11 @@ SSRender& SSRender::GetInstance()
 void SSRender::Startup()
 {
 	m_ScreenSize = glm::vec2( 32.0f, 18.0f );
+
+	m_Crosshair.setTexture( g_TextureBank.GetTexture( TEXTURE_HANDLE_CROSSHAIR ) );
+	m_Crosshair.setOrigin( sf::Vector2f( 0.5f * m_Crosshair.getTexture()->getSize().x, 0.5f * m_Crosshair.getTexture()->getSize().y ) );
+	m_Crosshair.setScale( RENDER_CROSSHAIR_SIZE / m_Crosshair.getTexture()->getSize().x, RENDER_CROSSHAIR_SIZE / m_Crosshair.getTexture()->getSize().y );
+	m_Crosshair.setColor( sf::Color::Red );
 }
 
 void SSRender::Shutdown()
@@ -53,6 +59,11 @@ void SSRender::Update( const float deltaTime )
 		}
 		entityID++;
 	}
+
+	sf::Vector2i mouseScreenPos = sf::Mouse::getPosition( *static_cast<sf::Window*>(m_Window) );
+	glm::vec2 mouseWorldPos = (m_Position - 0.5f * m_ScreenSize) + glm::vec2( ( mouseScreenPos.x * m_ScreenSize.x ) / m_Window->getSize().x, ( mouseScreenPos.y * m_ScreenSize.y ) / m_Window->getSize().y );
+	m_Crosshair.setPosition( sf::Vector2f( mouseWorldPos.x, mouseWorldPos.y ) );
+	m_Window->draw( m_Crosshair );
 }
 
 void SSRender::SetWindow(sf::RenderWindow* window)

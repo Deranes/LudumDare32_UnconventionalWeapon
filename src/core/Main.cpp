@@ -10,6 +10,7 @@ int main() {
 	game1.Initialize(&window);
 
 	sf::Clock gametimer;
+	window.setMouseCursorVisible( false );
 
 	bool paused = false;
 	

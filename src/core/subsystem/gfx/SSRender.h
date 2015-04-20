@@ -4,6 +4,8 @@
 #include "SFML/Graphics.hpp"
 #include "../../datadriven/ComponentTypes.h"
 
+#define RENDER_CROSSHAIR_SIZE	1.0f
+
 #define g_SSRender SSRender::GetInstance()
 
 class SSRender : public Subsystem{
@@ -30,4 +32,5 @@ private:
 	glm::vec2						m_BoundsMax;
 	glm::vec2						m_Position;
 	glm::vec2						m_PrevTargetPosition;
+	sf::Sprite						m_Crosshair;
 };
