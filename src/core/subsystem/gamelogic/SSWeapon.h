@@ -16,7 +16,7 @@ public:
     void Shutdown( ) override;
     void Update( const float deltaTime ) override;
 
-	void	Fire( Entity entity, const glm::vec2& direction );
+	void	Fire( Entity entity, const glm::vec2& position, const glm::vec2& direction );
 
 private:
     // No external instancing allowed

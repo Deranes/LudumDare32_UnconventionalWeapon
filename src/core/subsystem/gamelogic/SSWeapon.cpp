@@ -4,6 +4,7 @@
 #include "../../datadriven/EntityManager.h"
 #include "../../component/WeaponComponent.h"
 #include "../../component/VelocityComponent.h"
+#include "../../EntityFactory.h"
 
 SSWeapon& SSWeapon::GetInstance( )
 {
@@ -37,7 +38,7 @@ void SSWeapon::Update( const float deltaTime )
 	}
 }
 
-void SSWeapon::Fire( Entity entity, const glm::vec2& direction ) {
+void SSWeapon::Fire( Entity entity, const glm::vec2& position, const glm::vec2& direction ) {
 	EntityMask entityMask		= EntityManager::GetInstance().GetEntityMask(entity);
 	EntityMask weaponFlag		= DenseComponentCollection<WeaponComponent>::GetInstance().GetComponentTypeFlag();
 	EntityMask velocityFlag		= DenseComponentCollection<VelocityComponent>::GetInstance().GetComponentTypeFlag();
@@ -46,6 +47,7 @@ void SSWeapon::Fire( Entity entity, const glm::vec2& direction ) {
 		WeaponComponent* weaponComp = GetDenseComponent<WeaponComponent>(entity);
 		if ( weaponComp->CooldownCurrent <= 0.0f ) {
 			weaponComp->CooldownCurrent = weaponComp->CooldownMax;
+			EntityFactory::CreateProjectile( position, direction );
 
 			if ( entityMask & velocityFlag ) {
 				VelocityComponent* velocityComp = GetDenseComponent<VelocityComponent>(entity);

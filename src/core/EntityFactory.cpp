@@ -112,3 +112,32 @@ Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2
 
 	return entity;
 }
+
+Entity EntityFactory::CreateProjectile( const glm::vec2& position, const glm::vec2& direction ) {
+	Entity entity = g_EntityManager.CreateEntity();
+	
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PhysicsComponent		>() );
+
+	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
+	placementComp->Position	= position;
+
+	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_WALL) );
+
+	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
+	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PROJECTILE_SIZE_X / spriteSize.x, ENTITY_FACTORY_PROJECTILE_SIZE_Y / spriteSize.y ) );
+	spriteComp->Sprite.setOrigin( sf::Vector2f( 0.5f * spriteSize.x, 0.5f * spriteSize.y ) );
+
+	VelocityComponent* velocityComp = GetDenseComponent<VelocityComponent>(entity);
+	velocityComp->Velocity = direction * 40.0f;
+
+	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
+	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::PhysicsDriven );
+	glm::vec2 halfSize( 0.5f * ENTITY_FACTORY_PROJECTILE_SIZE_X, 0.5f * ENTITY_FACTORY_PROJECTILE_SIZE_Y );
+	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -halfSize, halfSize );
+
+	return entity;
+}

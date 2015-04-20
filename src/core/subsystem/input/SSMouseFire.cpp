@@ -44,7 +44,7 @@ void SSMouseFire::Update( const float deltaTime )
 			placementComp->Rotation = glm::atan( dist.y, dist.x ) * 180.0f / 3.1416f;
 
 			if ( sf::Mouse::isButtonPressed( aimComp->FireButton ) ) {
-				g_SSWeapon.Fire( entityID, glm::normalize( dist ) );
+				g_SSWeapon.Fire( entityID, placementComp->Position, glm::normalize( dist ) );
 			}
 		}
 		entityID++;
