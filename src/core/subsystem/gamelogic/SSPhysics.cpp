@@ -15,6 +15,11 @@ SSPhysics& SSPhysics::GetInstance( )
 
 void SSPhysics::Startup( )
 {
+	g_PhysicsEngine.SetNumberOfGroups( ENTITY_TYPE_SIZE );
+
+	g_PhysicsEngine.SetGroupInteraction( ENTITY_TYPE_PLAYER, ENTITY_TYPE_WALL, true );
+	g_PhysicsEngine.SetGroupInteraction( ENTITY_TYPE_PROJECTILE, ENTITY_TYPE_WALL, true );
+
     Subsystem::Startup();
 }
 
@@ -41,6 +46,7 @@ void SSPhysics::Update( const float deltaTime )
 			PlacementComponent*	placementComp	= GetDenseComponent<PlacementComponent>( entityID );
 			
 			physicsComp->RigidBody->SetPosition( placementComp->Position );
+			physicsComp->RigidBody->SetGroup( physicsComp->Group );
 
 			if ( entityMask & velocityFlag ) {
 				VelocityComponent* velocityComp = GetDenseComponent<VelocityComponent>( entityID );
@@ -68,5 +74,21 @@ void SSPhysics::Update( const float deltaTime )
 			}
 		}
 		entityID++;
+	}
+
+	for ( auto& collision : g_PhysicsEngine.GetCollisions() ) {
+		EntityMask entityMask = g_EntityManager.GetEntityMask( collision.A_UserData );
+		if ( entityMask & physicsFlag ) {
+			if ( GetDenseComponent<PhysicsComponent>(collision.A_UserData)->Group == ENTITY_TYPE_PROJECTILE ) {
+				g_EntityManager.RemoveEntity( collision.A_UserData );
+			}
+		}
+
+		entityMask = g_EntityManager.GetEntityMask( collision.B_UserData );
+		if ( entityMask & physicsFlag ) {
+			if ( GetDenseComponent<PhysicsComponent>(collision.B_UserData)->Group == ENTITY_TYPE_PROJECTILE ) {
+				g_EntityManager.RemoveEntity( collision.B_UserData );
+			}
+		}
 	}
 }

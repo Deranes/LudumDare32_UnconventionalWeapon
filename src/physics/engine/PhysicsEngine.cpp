@@ -15,6 +15,8 @@ void PhysicsEngine::Shutdown() {
 }
 
 void PhysicsEngine::Step( const float deltaTime ) {
+	m_Collisions.clear();
+
 	for ( auto& rigidBody : m_RigidBodies ) {
 		rigidBody->CalculateWorldVolumes();
 	}
@@ -23,6 +25,10 @@ void PhysicsEngine::Step( const float deltaTime ) {
 		for ( auto bBody_it = aBody_it + 1; bBody_it != m_RigidBodies.end(); ++bBody_it ) {
 			RigidBody* aBody = (*aBody_it);
 			RigidBody* bBody = (*bBody_it);
+
+			if ( !m_InteractionLookup[aBody->m_Group][bBody->m_Group] ) {
+				continue;
+			}
 
 			if ( aBody->m_MotionType != MotionType::PhysicsDriven && bBody->m_MotionType != MotionType::PhysicsDriven ) {
 				continue;
@@ -42,6 +48,7 @@ void PhysicsEngine::Step( const float deltaTime ) {
 			(*intersectionTestFunction)( aVolume, bVolume, aBody->m_Velocity, bBody->m_Velocity, deltaTime, result );
 
 			if ( result.Intersection ) {
+				m_Collisions.push_back( CollisionInfo( aBody->m_UserData, bBody->m_UserData ) );
 				aBody->m_Collisions.push_back( Collision( result.Time, result.NormalOne ) );
 				bBody->m_Collisions.push_back( Collision( result.Time, result.NormalTwo ) );
 			}
@@ -90,4 +97,20 @@ void PhysicsEngine::CreateCollisionVolumeAABB( IRigidBody* rigidBody, const glm:
 	newVolume->Max = max;
 
 	static_cast<RigidBody*>( rigidBody )->AddVolume( newVolume );
+}
+
+const std::vector<CollisionInfo>& PhysicsEngine::GetCollisions() {
+	return m_Collisions;
+}
+
+void PhysicsEngine::SetNumberOfGroups( int newSize ) {
+	m_InteractionLookup.resize( newSize );
+	for ( int y = 0; y < newSize; ++y ) {
+		m_InteractionLookup[y].resize( newSize );
+	}
+}
+
+void PhysicsEngine::SetGroupInteraction( int groupA, int groupB, bool interact ) {
+	m_InteractionLookup[groupA][groupB] = interact;
+	m_InteractionLookup[groupB][groupA] = interact;
 }

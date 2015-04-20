@@ -14,7 +14,6 @@
 #include "../gfx/TextureBank.h"
 #include "../physics/IPhysicsEngine.h"
 
-
 Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& color ) {
 	Entity entity = g_EntityManager.CreateEntity();
 	
@@ -47,6 +46,8 @@ Entity EntityFactory::CreatePlayer( const glm::vec2& position, const sf::Color& 
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
 	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::PhysicsDriven );
+	physicsComp->Group		= ENTITY_TYPE_PLAYER;
+	physicsComp->RigidBody->SetUserData( entity );
 	glm::vec2 halfSize( 0.5f * ENTITY_FACTORY_PLAYER_SIZE_X, 0.5f * ENTITY_FACTORY_PLAYER_SIZE_Y );
 	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -halfSize, halfSize );
 
@@ -108,6 +109,8 @@ Entity EntityFactory::CreateObstacle( const glm::vec2& position, const glm::vec2
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
 	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::Fixed );
+	physicsComp->Group		= ENTITY_TYPE_WALL;
+	physicsComp->RigidBody->SetUserData( entity );
 	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, glm::vec2( 0.0f ), size );
 
 	return entity;
@@ -138,6 +141,8 @@ Entity EntityFactory::CreateProjectile( const glm::vec2& position, const glm::ve
 
 	PhysicsComponent* physicsComp = GetDenseComponent<PhysicsComponent>(entity);
 	physicsComp->RigidBody	= g_PhysicsEngine.CreateRigidBody( MotionType::PhysicsDriven );
+	physicsComp->Group		= ENTITY_TYPE_PROJECTILE;
+	physicsComp->RigidBody->SetUserData( entity );
 	glm::vec2 halfSize( 0.5f * ENTITY_FACTORY_PROJECTILE_SIZE_X, 0.5f * ENTITY_FACTORY_PROJECTILE_SIZE_Y );
 	g_PhysicsEngine.CreateCollisionVolumeAABB( physicsComp->RigidBody, -halfSize, halfSize );
 

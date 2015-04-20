@@ -28,11 +28,15 @@ public:
 	void						SetPosition( const glm::vec2& newPosition ) override;
 	void						SetVelocity( const glm::vec2& newVelocity ) override;
 	void						SetMotionType( const MotionType newMotionType ) override;
+	void						SetGroup( int newGroupID ) override;
+	void						SetUserData( UserData newUserData ) override;
 
 	glm::vec2					m_Position;
 	glm::vec2					m_Velocity;
 	MotionType					m_MotionType;
 	std::vector<Collision>		m_Collisions;
+	int							m_Group;
+	UserData					m_UserData;
 
 private:
 	std::vector<const Volume*>	m_LocalVolumes;

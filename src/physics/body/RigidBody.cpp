@@ -50,3 +50,11 @@ void RigidBody::SetVelocity( const glm::vec2& newVelocity ) {
 void RigidBody::SetMotionType( const MotionType newMotionType ) {
 	m_MotionType = newMotionType;
 }
+
+void RigidBody::SetGroup( int newGroupID ) {
+	m_Group = newGroupID;
+}
+
+void RigidBody::SetUserData( UserData newUserData ) {
+	m_UserData = newUserData;
+}
