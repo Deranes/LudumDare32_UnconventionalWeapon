@@ -9,6 +9,8 @@
 #include "component/VelocityComponent.h"
 #include "component/PhysicsComponent.h"
 #include "component/FollowComponent.h"
+#include "component/WeaponComponent.h"
+#include "component/AimComponent.h"
 #include "../gfx/TextureBank.h"
 #include "../physics/IPhysicsEngine.h"
 
@@ -56,16 +58,17 @@ Entity EntityFactory::CreateWeapon( Entity owner, const glm::vec2& offset ) {
 	
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
-	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< ControllableComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< FollowComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< WeaponComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< AimComponent			>() );
 
 	PlacementComponent* placementComp		= GetDenseComponent<PlacementComponent>(entity);
 	PlacementComponent* ownerPlacementComp	= GetDenseComponent<PlacementComponent>(owner);
 	placementComp->Position	= ownerPlacementComp->Position + offset;
 
 	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
-	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PLAYER) );
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_CREATURE) );
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
 	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_WEAPON_SIZE_X / spriteSize.x, ENTITY_FACTORY_WEAPON_SIZE_Y / spriteSize.y ) );
@@ -75,6 +78,14 @@ Entity EntityFactory::CreateWeapon( Entity owner, const glm::vec2& offset ) {
 	followComp->TargetEntity	= owner;
 	followComp->Offset			= offset;
 	followComp->Acceleration	= 60.0f;
+
+	WeaponComponent* weaponComp	= GetDenseComponent<WeaponComponent>(entity);
+	weaponComp->CooldownMax		= 0.2f;
+	weaponComp->CooldownCurrent	= 0.0f;
+	weaponComp->Recoil			= 10.0f;
+
+	AimComponent* aimComp	= GetDenseComponent<AimComponent>(entity);
+	aimComp->FireButton		= sf::Mouse::Button::Left;
 
 	return entity;
 }

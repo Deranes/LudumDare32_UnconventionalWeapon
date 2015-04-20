@@ -5,4 +5,5 @@
 struct PlacementComponent
 {
 	glm::vec2		Position	= glm::vec2( 0.0f );
+	float			Rotation	= 0.0f;
 };

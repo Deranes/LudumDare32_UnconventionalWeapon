@@ -55,13 +55,20 @@ void SSRender::Update( const float deltaTime )
 			PlacementComponent* placementComp	= GetDenseComponent<PlacementComponent>( entityID );
 
 			spriteComp->Sprite.setPosition( sf::Vector2f( placementComp->Position.x, placementComp->Position.y ) );
+			glm::ivec2 spriteSize( spriteComp->Sprite.getTexture()->getSize().x, spriteComp->Sprite.getTexture()->getSize().y );
+			if ( glm::abs( placementComp->Rotation ) < 90.0f ) {
+				spriteComp->Sprite.setTextureRect( sf::IntRect( 0, 0, spriteSize.x, spriteSize.y ) );
+				spriteComp->Sprite.setRotation( placementComp->Rotation );
+			} else {
+				spriteComp->Sprite.setTextureRect( sf::IntRect( spriteSize.x, 0, -spriteSize.x, spriteSize.y ) );
+				spriteComp->Sprite.setRotation( 180.0f + placementComp->Rotation );
+			}
 			m_Window->draw(spriteComp->Sprite);
 		}
 		entityID++;
 	}
 
-	sf::Vector2i mouseScreenPos = sf::Mouse::getPosition( *static_cast<sf::Window*>(m_Window) );
-	glm::vec2 mouseWorldPos = (m_Position - 0.5f * m_ScreenSize) + glm::vec2( ( mouseScreenPos.x * m_ScreenSize.x ) / m_Window->getSize().x, ( mouseScreenPos.y * m_ScreenSize.y ) / m_Window->getSize().y );
+	glm::vec2 mouseWorldPos = this->CalculateWorldMousePos();
 	m_Crosshair.setPosition( sf::Vector2f( mouseWorldPos.x, mouseWorldPos.y ) );
 	m_Window->draw( m_Crosshair );
 }
@@ -78,4 +85,9 @@ void SSRender::SetTargetEntity( Entity newTargetEntity ) {
 void SSRender::SetBounds( const glm::vec2& min, const glm::vec2& max ) {
 	m_BoundsMin = min;
 	m_BoundsMax = max;
+}
+
+glm::vec2 SSRender::CalculateWorldMousePos() {
+	sf::Vector2i mouseScreenPos = sf::Mouse::getPosition( *static_cast<sf::Window*>(m_Window) );
+	return (m_Position - 0.5f * m_ScreenSize) + glm::vec2( ( mouseScreenPos.x * m_ScreenSize.x ) / m_Window->getSize().x, ( mouseScreenPos.y * m_ScreenSize.y ) / m_Window->getSize().y );
 }

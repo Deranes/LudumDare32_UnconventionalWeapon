@@ -11,6 +11,8 @@
 #include "component/VelocityComponent.h"
 #include "component/PhysicsComponent.h"
 #include "component/FollowComponent.h"
+#include "component/WeaponComponent.h"
+#include "component/AimComponent.h"
 #include "../gfx/TextureBank.h"
 #include "subsystem/gfx/SSRender.h"
 
@@ -33,6 +35,8 @@ void Game::Initialize(sf::RenderWindow* window){
 													GravityComponent,
 													VelocityComponent,
 													PhysicsComponent,
+													WeaponComponent,
+													AimComponent,
 													FollowComponent
 													>();
 

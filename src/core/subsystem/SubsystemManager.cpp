@@ -2,8 +2,10 @@
 #include "gamelogic/SSGravity.h"
 #include "gamelogic/SSPhysics.h"
 #include "gamelogic/SSFollow.h"
+#include "gamelogic/SSWeapon.h"
 #include "gfx/SSRender.h"
 #include "input/SSControllable.h"
+#include "input/SSMouseFire.h"
 #include "level/SSLevel.h"
 #include <algorithm>
 
@@ -30,6 +32,7 @@ void SubsystemManager::Startup()
 	g_SSGravity			.SetUpdateOrderPriority( 110U );	// Before: Physics		| After: Input
 	g_SSFollow			.SetUpdateOrderPriority( 110U );	// Before: Physics		|
 	g_SSPhysics			.SetUpdateOrderPriority( 130U );	// Before: Rendering	| After: Gravity (Accelerations)
+	g_SSMouseFire		.SetUpdateOrderPriority( 150U );	// Before: Rendering	| After: Position updating.
 	g_SSRender			.SetUpdateOrderPriority( 200U );	//						| After: Everything
 
 	// Shutdown priorities
@@ -39,9 +42,11 @@ void SubsystemManager::Startup()
 	AddSubsystem( &g_SSGravity		);
 	AddSubsystem( &g_SSPhysics		);
 	AddSubsystem( &g_SSFollow		);
+	AddSubsystem( &g_SSWeapon		);
 	AddSubsystem( &g_SSRender		);
 	AddSubsystem( &g_SSControllable	);
 	AddSubsystem( &g_SSLevel		);
+	AddSubsystem( &g_SSMouseFire	);
 
 	StartAll();
 }

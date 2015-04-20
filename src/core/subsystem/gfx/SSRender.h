@@ -19,6 +19,8 @@ public:
 	void					SetTargetEntity( Entity newTargetEntity );
 	void					SetBounds( const glm::vec2& min, const glm::vec2& max );
 
+	glm::vec2				CalculateWorldMousePos();
+
 private:
 	SSRender() : Subsystem("SSRender") {}
 	SSRender(const SSRender & rhs);
