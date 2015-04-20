@@ -118,14 +118,16 @@ Entity EntityFactory::CreateProjectile( const glm::vec2& position, const glm::ve
 	
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PlacementComponent	>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< SpriteComponent		>() );
+	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< GravityComponent		>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< VelocityComponent		>() );
 	g_EntityManager.AddComponent( entity, GetDenseComponentTypeIndex< PhysicsComponent		>() );
 
 	PlacementComponent* placementComp = GetDenseComponent<PlacementComponent>(entity);
 	placementComp->Position	= position;
+	placementComp->Rotation = glm::atan( direction.y, direction.x ) * 180.0f / 3.1416f;
 
 	SpriteComponent* spriteComp = GetDenseComponent<SpriteComponent>(entity);
-	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_WALL) );
+	spriteComp->Sprite.setTexture( g_TextureBank.GetTexture(TEXTURE_HANDLE_PROJECTILE) );
 
 	sf::Vector2u spriteSize = spriteComp->Sprite.getTexture()->getSize();
 	spriteComp->Sprite.setScale( sf::Vector2f( ENTITY_FACTORY_PROJECTILE_SIZE_X / spriteSize.x, ENTITY_FACTORY_PROJECTILE_SIZE_Y / spriteSize.y ) );
